@@ -40,6 +40,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci --production
+     
+      - name: Install list
+        run: ls
 
       - name: Start app using PM2
         run: |
