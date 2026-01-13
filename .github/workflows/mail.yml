@@ -1,0 +1,23 @@
+name : node js application test and deploy
+on:
+  push:
+    branches:
+        - "**"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps: 
+      - name: checkout repository
+        uses: actions/checkout@v4
+      - name: set up node js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+      - name: install dependency
+        run : npm install
+      
+      - name: run test
+        run : npm run check
