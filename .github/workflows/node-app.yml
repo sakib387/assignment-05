@@ -45,4 +45,8 @@ jobs:
         run: ls
 
       - name: Start app using PM2
-        run: npm run dev
+        run: |
+          pm2 stop node-app || true
+          pm2 delete node-app || true
+          pm2 start npm --name "node-app" -- run dev
+          pm2 save
