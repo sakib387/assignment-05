@@ -21,3 +21,29 @@ jobs:
       
       - name: run test
         run : npm run check
+  deploy:
+    name: deploy using pm2
+    needs: test
+    runs-on: self-hosted
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        run: |
+        curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+
+      - name: Install PM2
+        run: sudo npm install -g pm2
+
+      - name: Install dependencies
+        run: npm ci --production
+
+      - name: Start app using PM2
+        run: |
+          pm2 stop node-app || true
+          pm2 delete node-app || true
+          pm2 start npm --name "node-app" -- run dev
+          pm2 save
